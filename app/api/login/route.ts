@@ -1,4 +1,5 @@
 import bcrypt from "bcrypt";
+import jwt from "jsonwebtoken";
 import prisma from "@/utilities/db";
 
 import { NextResponse } from "next/server";
@@ -23,6 +24,12 @@ export const POST = async (req: Request) => {
     return NextResponse.json({ message: "Password is incorrect" });
   } else {
     console.log("Password is correct");
-    return NextResponse.json(user);
+    const secretKey: string | undefined = process.env.SECRET_KEY;
+    if (!secretKey) {
+      console.error("Secret key not found");
+      return NextResponse.json({ message: "Internal server error" });
+    }
+    const token = jwt.sign({ password }, secretKey, { expiresIn: "1h" });
+    return NextResponse.json({ token, status: 200 });
   }
 };
