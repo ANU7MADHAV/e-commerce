@@ -34,7 +34,16 @@ const SignPage = () => {
     resolver: zodResolver(validationSchema),
   });
 
-  const onSubmit: SubmitHandler<ValidationSchema> = (data) => console.log(data);
+  const onSubmit: SubmitHandler<ValidationSchema> = async (data) => {
+    const res = await fetch("/api", {
+      method: "POST",
+      body: JSON.stringify(data),
+    });
+    if (res.ok) {
+      const result = await res.json();
+      console.log(result);
+    }
+  };
 
   return (
     <form
