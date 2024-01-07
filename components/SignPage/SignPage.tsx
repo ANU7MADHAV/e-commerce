@@ -35,7 +35,7 @@ const SignPage = () => {
   });
 
   const onSubmit: SubmitHandler<ValidationSchema> = async (data) => {
-    const res = await fetch("/api", {
+    const res = await fetch("/api/signup", {
       method: "POST",
       body: JSON.stringify(data),
     });

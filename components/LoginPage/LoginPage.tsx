@@ -21,7 +21,19 @@ export default function LoginPage() {
   } = useForm<ValidationSchema>({
     resolver: zodResolver(validationSchema),
   });
-  const onSubmit: SubmitHandler<ValidationSchema> = (data) => console.log(data);
+  const onSubmit: SubmitHandler<ValidationSchema> = async (data) => {
+    const res = await fetch("/api/login", {
+      method: "POST",
+      body: JSON.stringify(data),
+    });
+    if (!res.ok) {
+      console.error("Something happened");
+    }
+    if (res.ok) {
+      const result = await res.json();
+      console.log(result);
+    }
+  };
 
   return (
     <div className="mt-4 flex w-full flex-col items-center justify-center">
